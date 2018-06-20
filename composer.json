@@ -1,0 +1,36 @@
+{
+    "name": "harrison/coinpayment",
+    "description": "CoinPayment PHP client for Laravel",
+    "keywords": ["Payment Method", "cryptocurrency", "Payment Gateway", "CoinPayment"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Saifullah Syahidin",
+            "email": "hexters@gmail.com"
+        },
+        {
+            "name": "Harrison Favour",
+            "email": "grantfayrouz101@gmail.com"
+        }
+    ],
+    "require":{
+      "php": ">=7.1",
+      "guzzlehttp/guzzle": "^6.3",
+      "nesbot/carbon": "^1.25"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Harrison\\CoinPayment\\Providers\\CoinPaymentServiceProvider"
+            ],
+            "aliases": {
+              "CoinPayment": "Harrison\\CoinPayment\\Providers\\CoinPaymentFacade"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Harrison\\CoinPayment\\": "src/"
+        }
+    }
+}
