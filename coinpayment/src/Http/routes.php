@@ -23,6 +23,7 @@ function() {
     Route::post('/ajax/createtransfer', 'CoinPaymentController@create_transfer')->name('coinpayment.ajax.create.transfer');
     Route::post('/ajax/createwithdrawal', 'CoinPaymentController@create_withdrawal')->name('coinpayment.ajax.create.withdrawal');
     Route::post('/ajax/balances', 'CoinPaymentController@get_balances')->name('coinpayment.ajax.balances');
+    Route::post('/ajax/callback_address', 'CoinPaymentController@get_callback_address')->name('coinpayment.ajax.callback.address');
 
     Route::get('/transactions/histories', 'CoinPaymentController@transactions_list')->name('coinpayment.transaction.histories');
 });
