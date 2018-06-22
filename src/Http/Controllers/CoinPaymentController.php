@@ -188,6 +188,20 @@ class CoinPaymentController extends Controller
         return CoinPayment::api_call('balances', array('all' => $all ? 1 : 0));
     }
 
+    /**
+     * Creates an address for receiving payments into your CoinPayments Wallet.<br />
+     * @param currency The cryptocurrency to create a receiving address for.
+     * @param ipn_url Optionally set an IPN handler to receive notices about this transaction. If ipn_url is empty then it will use the default IPN URL in your account.
+     */
+    public function get_callback_address(Request $request) {
+        $req = array(
+            'currency' => $request->currency,
+//            'ipn_url' => $request->ipn_url || config('coinpayment.coinpayment_ipn_url'),
+            'ipn_url' => config('coinpayment.coinpayment_ipn_url'),
+        );
+        return CoinPayment::api_call('get_callback_address', $req);
+    }
+
     public function trx_info(Request $req)
     {
         $payment = CoinPayment::api_call('get_tx_info', [
