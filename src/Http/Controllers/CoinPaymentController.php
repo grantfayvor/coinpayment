@@ -3,6 +3,7 @@
 namespace Harrison\CoinPayment\Http\Controllers;
 
 use App\Jobs\coinPaymentCallbackProccedJob;
+use App\Jobs\CreateTransactionJob;
 use App\Jobs\IPNHandlerCoinPaymentJob;
 use CoinPayment;
 use Harrison\CoinPayment\Entities\cointpayment_log_trx;
@@ -193,13 +194,21 @@ class CoinPaymentController extends Controller
      * @param currency The cryptocurrency to create a receiving address for.
      * @param ipn_url Optionally set an IPN handler to receive notices about this transaction. If ipn_url is empty then it will use the default IPN URL in your account.
      */
-    public function get_callback_address(Request $request) {
+    public function get_callback_address(Request $request)
+    {
         $req = array(
-            'currency' => $request->currency,
+            'currency' => $request->currency ?: 'BTC',
 //            'ipn_url' => $request->ipn_url || config('coinpayment.coinpayment_ipn_url'),
             'ipn_url' => config('coinpayment.coinpayment_ipn_url'),
         );
-        return CoinPayment::api_call('get_callback_address', $req);
+        $response = CoinPayment::api_call('get_callback_address', $req);
+        if ($response['error'] == "ok") {
+//            $user = auth()->user();
+//            $transaction = $user->coinpayment_transactions()->where('user_id', $user->id)->first();
+            dispatch(new CreateTransactionJob(['payment_address' => $response['result']['address'], 'user_id' => $request->user()->id,
+                'amount_to_pay' => $request->amount_usd, 'payload' => serialize($request->all())]));
+        }
+        return $response;
     }
 
     public function trx_info(Request $req)
