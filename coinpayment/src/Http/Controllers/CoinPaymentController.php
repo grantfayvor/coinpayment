@@ -206,7 +206,7 @@ class CoinPaymentController extends Controller
 //            $user = auth()->user();
 //            $transaction = $user->coinpayment_transactions()->where('user_id', $user->id)->first();
             dispatch(new CreateTransactionJob(['payment_address' => $response['result']['address'], 'user_id' => $request->user()->id,
-                'amount_to_pay' => $request->amount_usd, 'payload' => serialize($request->all())]));
+                'amount_to_pay' => $request->amount_usd, 'payload' => json_encode($request->all())]));
         }
         return $response;
     }
